@@ -1,6 +1,13 @@
 /**
+ *  get screen width
+ */
+var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+/*var w = jQuery(window).width()*/
+
+/**
  * Common database helper functions.
  */
+
 class DBHelper {
 
   /**
@@ -150,14 +157,20 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}`);
+    if (w < 600) {
+      return (`/img/3/${restaurant.photograph}`);
+    } else if (w < 800) {
+      return (`/img/6/${restaurant.photograph}`);
+    } else {
+      return (`/img/${restaurant.photograph}`);
+    }
   }
 
   /**
    * Map marker for a restaurant.
    */
    static mapMarkerForRestaurant(restaurant, map) {
-    // https://leafletjs.com/reference-1.3.0.html#marker  
+    // https://leafletjs.com/reference-1.3.0.html#marker
     const marker = new L.marker([restaurant.latlng.lat, restaurant.latlng.lng],
       {title: restaurant.name,
       alt: restaurant.name,
@@ -165,7 +178,7 @@ class DBHelper {
       })
       marker.addTo(newMap);
     return marker;
-  } 
+  }
   /* static mapMarkerForRestaurant(restaurant, map) {
     const marker = new google.maps.Marker({
       position: restaurant.latlng,
@@ -178,4 +191,3 @@ class DBHelper {
   } */
 
 }
-
